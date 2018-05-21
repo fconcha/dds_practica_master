@@ -104,6 +104,7 @@ ip_geo_merge <- rbind.data.frame(ip_geo_apache, ip_geo_email, ip_geo_ftp, ip_geo
 
 
 # Se muestra la tabla Final con los datos elegantes para poder mapear posteriormente.
+
 View(ip_geo_merge)
 
 

@@ -1,5 +1,31 @@
-write.table(total_p24000, file = "total_p24000.txt", sep = "\t", row.names = FALSE)
-ip_geo_txt <- read.csv("/Users/felipeconcha/ddspracticamaster/merge_muestra1.txt", sep = "\t")
+
+# Buscamos la data que tenemos en nuestro equipo que contiene el total de ataques 28135 lineas
+total_ataques <- read.csv("/Users/felipeconcha/ddspracticamaster/total_dataframe.txt", sep = "\t")
+
+# Cargamos las librerias necesarias para trabajar con leaflet
+install.packages("leaflet")
+library(leaflet)
+library(sp)
+
+# Primero mostramos el mapa y luego seteamos las marcas de latitud y longitud que vienen desde nuestro objeto creado antes llamado
+# ip_geo_merge y le damos un comentario por el tipo de ataque
+world_map <- leaflet() %>% addTiles() %>% 
+  addMarkers(data = total_ataques, lng = total_ataques$longitude, lat = total_ataques$latitude, popup = total_ataques$time_zone, clusterOptions = markerClusterOptions())
+
+# Mostramos el objeto
+
+world_map
+
+####################################################################################################
+test34
+# unimos todos los dataframe creados en uno solo
+
+total_dataframe <- rbind.data.frame(total_p8000, total_p16000, total_p24000, total_p28135)
+total_dataframe
+class(total_dataframe)
+
+View(total_p24000)
+
 
 total_ip <- read.csv("https://lists.blocklist.de/lists/all.txt")
 colnames(total_ip) <- c("IP")
@@ -10,8 +36,9 @@ library(rjson)
 library(RCurl)
 library(bitops)
 
-primeras_24000 <- as.data.frame(total_ip$IP[16001:24000])
-primeras_8000
+primeras_28135 <- as.data.frame(total_ip$IP[24001:28135])
+
+total_p28135
 
 geodeip <- function(df = NULL) {
   if (is.data.frame(df) == FALSE) {
@@ -32,7 +59,7 @@ geodeip <- function(df = NULL) {
   }
 }
 
-total_p24000 <- geodeip(primeras_24000)
+total_p28135 <- geodeip(primeras_28135)
 total_p8000
 total_p16000
 total_p24000

@@ -15,7 +15,7 @@ world_map <- leaflet() %>% addTiles() %>%
 world_map
 
 
-
+ls()
 ##mapas 2
 
 install.packages("ggmap")
@@ -50,7 +50,7 @@ al1 = get_map(location = 'Europe', zoom = 3, color="bw",maptype = "terrain")
 map = ggmap(al1)
 map 
 
-#this works
+#map con geopoint
 map+geom_point(data=points, aes(x=reclong, y=reclat, colour="red"))
 
 # MAPA 6
@@ -60,7 +60,7 @@ worldmap <- ggplot(world, aes(x=long, y=lat, group=group)) +
   scale_y_continuous(breaks=(-2:2) * 30) +
   scale_x_continuous(breaks=(-4:4) * 45)
 
-#this works
+#map con geompoint
 worldmap + geom_point(aes(50, 30, colour="red"))
 
 

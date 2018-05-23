@@ -108,7 +108,4 @@ ip_geo_merge <- rbind.data.frame(ip_geo_apache, ip_geo_email, ip_geo_ftp, ip_geo
 View(ip_geo_merge)
 
 
-ls.str(max.label = -1)
 
-rm(list = ls())
-ls()

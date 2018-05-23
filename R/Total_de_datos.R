@@ -26,6 +26,8 @@ class(total_dataframe)
 
 View(total_p24000)
 
+rm(list=ls()) 
+ls()
 
 total_ip <- read.csv("https://lists.blocklist.de/lists/all.txt")
 colnames(total_ip) <- c("IP")
@@ -67,3 +69,6 @@ ls ()
 
 a <- c(1, 3, 4, 5, 3, 5, 6)
 a[4:8]
+
+altura
+read_table4

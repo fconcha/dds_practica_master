@@ -4,7 +4,7 @@ install.packages('devtools')
 install.packages("rjson")
 install.packages("RCurl")
 install.packages("bitops")
-
+y
 
 # Instalación de librerarias necesarios para la función que recorre la lista de IP
 

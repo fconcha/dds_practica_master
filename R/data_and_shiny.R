@@ -4,7 +4,8 @@ install.packages('devtools')
 install.packages("rjson")
 install.packages("RCurl")
 install.packages("bitops")
-
+install.packages("shiny")
+install.packages("leaflet")
 
 # Instalación de librerarias necesarios para la función que recorre la lista de IP
 
@@ -13,30 +14,32 @@ library(rjson)
 library(RCurl)
 library(bitops)
 
-# Cargamos los Packages librerias necesarias para trabajar con leaflet
-install.packages("leaflet")
+# Cargamos las librerias necesarias para trabajar con leaflet
+
 library(leaflet)
 library(sp)
 
+# Cargamos Shiny para ver los mapas en html
+library(shiny)
 
 # Creación de un data frame que contiene la lista de todas las IP bloquedas proporcionadas por el sitio https://lists.blocklist.de/lists/all.txt
-# divididas por una muestra aleatoria de 80 filas de cada unas de las amenzas registradas, ataques servidor apache, email, ftp, ssh, imap,
-# sip (SIP-, VOIP- or Asterisk), fuerza bruta, además de todas las ip (no es una muestra de 80)trong que son las que han estado activas por
+# divididas por una muestra aleatoria de 8 filas de cada unas de las amenzas registradas, ataques servidor apache, email, ftp, ssh, imap,
+# sip (SIP-, VOIP- or Asterisk), fuerza bruta, además de todas las ip (no es una muestra de 8)trong que son las que han estado activas por
 #mas de dos meses y contienen mas de 5000 ataques
 block_apache <- read.csv("https://lists.blocklist.de/lists/apache.txt")
-block_apache <- as.data.frame((block_apache[sample(nrow(block_apache), 80), ]))
+block_apache <- as.data.frame((block_apache[sample(nrow(block_apache), 8), ]))
 block_email <- read.csv("https://lists.blocklist.de/lists/email.txt")
-block_email <- as.data.frame((block_email[sample(nrow(block_email), 80), ]))
+block_email <- as.data.frame((block_email[sample(nrow(block_email), 8), ]))
 block_ftp <- read.csv("https://lists.blocklist.de/lists/ftp.txt")
-block_ftp <- as.data.frame((block_ftp[sample(nrow(block_ftp), 80), ]))
+block_ftp <- as.data.frame((block_ftp[sample(nrow(block_ftp), 8), ]))
 block_ssh <- read.csv("https://lists.blocklist.de/lists/ssh.txt")
-block_ssh <- as.data.frame((block_ssh[sample(nrow(block_ssh), 80), ]))
+block_ssh <- as.data.frame((block_ssh[sample(nrow(block_ssh), 8), ]))
 block_imap <- read.csv("https://lists.blocklist.de/lists/imap.txt")
-block_imap <- as.data.frame((block_imap[sample(nrow(block_imap), 80), ]))
+block_imap <- as.data.frame((block_imap[sample(nrow(block_imap), 8), ]))
 block_sip <- read.csv("https://lists.blocklist.de/lists/sip.txt")
-block_sip <- as.data.frame((block_sip[sample(nrow(block_sip), 80), ]))
+block_sip <- as.data.frame((block_sip[sample(nrow(block_sip), 8), ]))
 block_brute <- read.csv("https://lists.blocklist.de/lists/bruteforcelogin.txt")
-block_brute <- as.data.frame((block_brute[sample(nrow(block_brute), 80), ]))
+block_brute <- as.data.frame((block_brute[sample(nrow(block_brute), 8), ]))
 block_strong <- read.csv("https://lists.blocklist.de/lists/strongips.txt")
 
 
@@ -113,19 +116,21 @@ View(ip_geo_merge)
 
 
 # Buscamos la data que tenemos en nuestro equipo que contiene el total de ataques 28135 lineas
-total_ataques <- read.csv("data/total_dataframe.txt", sep = "\t")
+total_ataques <- read.csv("/Users/felipeconcha/ddspracticamaster/R/data/total_dataframe.txt", sep = "\t")
 
-library(shiny)
+
+# Vemos el resultado de los datos obtenidos con shiny en dos vistas, la primera que contiene una muestra de los ataques los últimos 48 minutos
+# La segunda que contiene el total de ataques de todos los servicios
 
 ui <- fluidPage(
   tabsetPanel(
     tabPanel("Muestra Ataques 48 horas", verbatimTextOutput("summary"), leafletOutput(
       "mimapa", width = "100%", height = 910)
-    ), 
+    ),
     tabPanel("Total de ataques", tableOutput("table"), leafletOutput(
       "world_map", width = "100%", height = 910) )
   ),
-  
+
   absolutePanel(
     bottom = 50, right = 50, width = 200,
     draggable = TRUE)
@@ -133,10 +138,10 @@ ui <- fluidPage(
 
 
 server <- function(input, output, session) {
-  output$mimapa <- renderLeaflet(leaflet() %>% addTiles() %>% 
+  output$mimapa <- renderLeaflet(leaflet() %>% addTiles() %>%
                                    addMarkers(data = ip_geo_merge, lng = ip_geo_merge$longitude, lat = ip_geo_merge$latitude, popup = ip_geo_merge$servicio, clusterOptions = markerClusterOptions())
   )
-  output$world_map <-renderLeaflet( leaflet() %>% addTiles() %>% 
+  output$world_map <-renderLeaflet( leaflet() %>% addTiles() %>%
                                       addMarkers(data = total_ataques, lng = total_ataques$longitude, lat = total_ataques$latitude, popup = total_ataques$time_zone, clusterOptions = markerClusterOptions())
   )
 }

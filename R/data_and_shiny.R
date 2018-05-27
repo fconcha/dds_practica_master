@@ -13,6 +13,11 @@ library(rjson)
 library(RCurl)
 library(bitops)
 
+# Cargamos los Packages librerias necesarias para trabajar con leaflet
+install.packages("leaflet")
+library(leaflet)
+library(sp)
+
 
 # Creación de un data frame que contiene la lista de todas las IP bloquedas proporcionadas por el sitio https://lists.blocklist.de/lists/all.txt
 # divididas por una muestra aleatoria de 80 filas de cada unas de las amenzas registradas, ataques servidor apache, email, ftp, ssh, imap,
@@ -108,5 +113,32 @@ View(ip_geo_merge)
 
 
 # Buscamos la data que tenemos en nuestro equipo que contiene el total de ataques 28135 lineas
-total_ataques <- read.csv("/../data/total_dataframe.txt", sep = "\t")
+total_ataques <- read.csv("data/total_dataframe.txt", sep = "\t")
 
+library(shiny)
+
+ui <- fluidPage(
+  tabsetPanel(
+    tabPanel("Muestra Ataques 48 horas", verbatimTextOutput("summary"), leafletOutput(
+      "mimapa", width = "100%", height = 910)
+    ), 
+    tabPanel("Total de ataques", tableOutput("table"), leafletOutput(
+      "world_map", width = "100%", height = 910) )
+  ),
+  
+  absolutePanel(
+    bottom = 50, right = 50, width = 200,
+    draggable = TRUE)
+)
+
+
+server <- function(input, output, session) {
+  output$mimapa <- renderLeaflet(leaflet() %>% addTiles() %>% 
+                                   addMarkers(data = ip_geo_merge, lng = ip_geo_merge$longitude, lat = ip_geo_merge$latitude, popup = ip_geo_merge$servicio, clusterOptions = markerClusterOptions())
+  )
+  output$world_map <-renderLeaflet( leaflet() %>% addTiles() %>% 
+                                      addMarkers(data = total_ataques, lng = total_ataques$longitude, lat = total_ataques$latitude, popup = total_ataques$time_zone, clusterOptions = markerClusterOptions())
+  )
+}
+
+shinyApp(ui, server)

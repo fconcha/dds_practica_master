@@ -116,7 +116,7 @@ View(ip_geo_merge)
 
 
 # Buscamos la data que tenemos en nuestro equipo que contiene el total de ataques 28135 lineas
-total_ataques <- read.csv("/Users/felipeconcha/ddspracticamaster/R/data/total_dataframe.txt", sep = "\t")
+total_ataques <- read.csv("./data/total_dataframe.txt", sep = "\t")
 
 
 # Vemos el resultado de los datos obtenidos con shiny en dos vistas, la primera que contiene una muestra de los ataques los últimos 48 minutos

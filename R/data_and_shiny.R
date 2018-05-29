@@ -123,12 +123,20 @@ total_ataques <- read.csv("data/total_dataframe.txt", sep = "\t")
 # La segunda que contiene el total de ataques de todos los servicios
 
 ui <- fluidPage(
-  tabsetPanel(
-    tabPanel("Muestra Ataques 48 horas", verbatimTextOutput("summary"), leafletOutput(
-      "mimapa", width = "100%", height = 910)
+  title = "Examples of DataTables",
+  sidebarLayout(
+    checkboxGroupInput("variable", "Variables to show:",
+                       c("Cylinders" = "cyl",
+                         "Transmission" = "am",
+                         "Gears" = "gear"))
     ),
-    tabPanel("Total de ataques", tableOutput("table"), leafletOutput(
-      "world_map", width = "100%", height = 910) )
+    
+    tabsetPanel(
+      tabPanel("Muestra Ataques 48 horas", verbatimTextOutput("summary"), leafletOutput(
+        "mimapa", width = "100%", height = 910)
+      ),
+      tabPanel("Total de ataques", tableOutput("table"), leafletOutput(
+        "world_map", width = "100%", height = 910) )
   ),
 
   absolutePanel(

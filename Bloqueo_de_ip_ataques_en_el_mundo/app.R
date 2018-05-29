@@ -1,11 +1,11 @@
 # Instalación de Paquetes base para la creación del data frame
 
-install.packages('devtools')
-install.packages("rjson")
-install.packages("RCurl")
-install.packages("bitops")
-install.packages("shiny")
-install.packages("leaflet")
+# install.packages('devtools')
+# install.packages("rjson")
+# install.packages("RCurl")
+# install.packages("bitops")
+# install.packages("shiny")
+# install.packages("leaflet")
 
 # Instalación de librerarias necesarios para la función que recorre la lista de IP
 
@@ -27,19 +27,19 @@ library(shiny)
 # sip (SIP-, VOIP- or Asterisk), fuerza bruta, además de todas las ip (no es una muestra de 8)trong que son las que han estado activas por
 #mas de dos meses y contienen mas de 5000 ataques
 block_apache <- read.csv("https://lists.blocklist.de/lists/apache.txt")
-block_apache <- as.data.frame((block_apache[sample(nrow(block_apache), 8), ]))
+block_apache <- as.data.frame((block_apache[sample(nrow(block_apache), 2), ]))
 block_email <- read.csv("https://lists.blocklist.de/lists/email.txt")
-block_email <- as.data.frame((block_email[sample(nrow(block_email), 8), ]))
+block_email <- as.data.frame((block_email[sample(nrow(block_email), 2), ]))
 block_ftp <- read.csv("https://lists.blocklist.de/lists/ftp.txt")
-block_ftp <- as.data.frame((block_ftp[sample(nrow(block_ftp), 8), ]))
+block_ftp <- as.data.frame((block_ftp[sample(nrow(block_ftp), 2), ]))
 block_ssh <- read.csv("https://lists.blocklist.de/lists/ssh.txt")
-block_ssh <- as.data.frame((block_ssh[sample(nrow(block_ssh), 8), ]))
+block_ssh <- as.data.frame((block_ssh[sample(nrow(block_ssh), 2), ]))
 block_imap <- read.csv("https://lists.blocklist.de/lists/imap.txt")
-block_imap <- as.data.frame((block_imap[sample(nrow(block_imap), 8), ]))
+block_imap <- as.data.frame((block_imap[sample(nrow(block_imap), 2), ]))
 block_sip <- read.csv("https://lists.blocklist.de/lists/sip.txt")
-block_sip <- as.data.frame((block_sip[sample(nrow(block_sip), 8), ]))
+block_sip <- as.data.frame((block_sip[sample(nrow(block_sip), 2), ]))
 block_brute <- read.csv("https://lists.blocklist.de/lists/bruteforcelogin.txt")
-block_brute <- as.data.frame((block_brute[sample(nrow(block_brute), 8), ]))
+block_brute <- as.data.frame((block_brute[sample(nrow(block_brute), 2), ]))
 block_strong <- read.csv("https://lists.blocklist.de/lists/strongips.txt")
 
 
@@ -92,7 +92,7 @@ ip_geo_strong <- geodeip(block_strong)
 
 # Vemos los resultados del objeto con una vista de tabla ejemplo Strong
 
-View(ip_geo_strong)
+#View(ip_geo_strong)
 
 # Agreamos una columna a cada objeto con el nombre del servicio atacado
 
@@ -112,11 +112,22 @@ ip_geo_merge <- rbind.data.frame(ip_geo_apache, ip_geo_email, ip_geo_ftp, ip_geo
 
 
 # Se muestra la tabla Final con los datos elegantes para poder mapear posteriormente.
-View(ip_geo_merge)
+# View(ip_geo_merge)
 
 
 # Buscamos la data que tenemos en nuestro equipo que contiene el total de ataques 28135 lineas
 total_ataques <- read.csv("data/total_dataframe.txt", sep = "\t")
+
+
+# Creamos los iconos markers (marcadores) que utilizaremos para mostrar la ip en el mapa
+
+icons <- awesomeIcons(
+  icon = 'ios-checkmark',
+  iconColor = 'black',
+  markerColor = "blue",
+  library = 'ion',
+  # markerColor = getColor(df.20)
+)
 
 
 # Vemos el resultado de los datos obtenidos con shiny en dos vistas, la primera que contiene una muestra de los ataques los últimos 48 minutos
@@ -139,10 +150,10 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
   output$mimapa <- renderLeaflet(leaflet() %>% addTiles() %>%
-                                   addMarkers(data = ip_geo_merge, lng = ip_geo_merge$longitude, lat = ip_geo_merge$latitude, popup = ip_geo_merge$servicio, clusterOptions = markerClusterOptions())
+                                   addAwesomeMarkers(data = ip_geo_merge, icon = icons, lng = ip_geo_merge$longitude, lat = ip_geo_merge$latitude, popup = ip_geo_merge$servicio, clusterOptions = markerClusterOptions())
   )
   output$world_map <-renderLeaflet( leaflet() %>% addTiles() %>%
-                                      addMarkers(data = total_ataques, lng = total_ataques$longitude, lat = total_ataques$latitude, popup = total_ataques$time_zone, clusterOptions = markerClusterOptions())
+                                      addAwesomeMarkers(data = total_ataques, icon = icons, lng = total_ataques$longitude, lat = total_ataques$latitude, popup = total_ataques$time_zone, clusterOptions = markerClusterOptions())
   )
 }
 

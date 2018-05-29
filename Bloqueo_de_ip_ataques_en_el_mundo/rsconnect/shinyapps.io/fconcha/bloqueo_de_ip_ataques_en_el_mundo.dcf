@@ -1,0 +1,10 @@
+name: bloqueo_de_ip_ataques_en_el_mundo
+title:
+username:
+account: fconcha
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 350471
+bundleId: 1398323
+url: https://fconcha.shinyapps.io/bloqueo_de_ip_ataques_en_el_mundo/
+when: 1527599797.12625

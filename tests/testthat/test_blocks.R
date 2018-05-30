@@ -1,6 +1,8 @@
 #File: test_blocks.R
 context("blocks tests")
 
+source("load_data.R")
+
 block <- LoadBlock("https://lists.blocklist.de/lists/apache.txt", 8)
 
 test_that("LoadBlock returns expected data for Apache",{

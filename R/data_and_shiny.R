@@ -1,4 +1,5 @@
 # Recommended code style https://google.github.io/styleguide/Rguide.xml
+# Execute local tests from console using > testthat::test_dir("tests/testthat")
 # Instalación de Paquetes base para la creación del data frame
 
 if (!require(devtools)) {
@@ -41,10 +42,14 @@ if (!require(sp)) {
 # }
 
 # Funciones de carga de datos
-loadBlock <- function(url, rows) {
-  block <- read.csv(url)
-  return(as.data.frame((block[sample(nrow(block), rows), ])))
-}
+source("load_data.R")
+# loadBlock <- function(url, rows) {
+#   block <- read.csv(url)
+#   return(as.data.frame((block[sample(nrow(block), rows), ])))
+# }
+
+# Rows to load
+trows = 8
 
 # Creación de un data frame que contiene la lista de todas las IP bloquedas proporcionadas por el sitio https://lists.blocklist.de/lists/all.txt
 # divididas por una muestra aleatoria de 8 filas de cada unas de las amenzas registradas, ataques servidor apache, email, ftp, ssh, imap,
@@ -53,20 +58,32 @@ loadBlock <- function(url, rows) {
 
 # block_apache <- read.csv("https://lists.blocklist.de/lists/apache.txt")
 # block_apache <- as.data.frame((block_apache[sample(nrow(block_apache), 8), ]))
-block_apache <- loadBlock("https://lists.blocklist.de/lists/apache.txt", 8)
+block_apache <- loadBlock("https://lists.blocklist.de/lists/apache.txt", trows)
 
-block_email <- read.csv("https://lists.blocklist.de/lists/email.txt")
-block_email <- as.data.frame((block_email[sample(nrow(block_email), 8), ]))
-block_ftp <- read.csv("https://lists.blocklist.de/lists/ftp.txt")
-block_ftp <- as.data.frame((block_ftp[sample(nrow(block_ftp), 8), ]))
-block_ssh <- read.csv("https://lists.blocklist.de/lists/ssh.txt")
-block_ssh <- as.data.frame((block_ssh[sample(nrow(block_ssh), 8), ]))
-block_imap <- read.csv("https://lists.blocklist.de/lists/imap.txt")
-block_imap <- as.data.frame((block_imap[sample(nrow(block_imap), 8), ]))
-block_sip <- read.csv("https://lists.blocklist.de/lists/sip.txt")
-block_sip <- as.data.frame((block_sip[sample(nrow(block_sip), 8), ]))
-block_brute <- read.csv("https://lists.blocklist.de/lists/bruteforcelogin.txt")
-block_brute <- as.data.frame((block_brute[sample(nrow(block_brute), 8), ]))
+# block_email <- read.csv("https://lists.blocklist.de/lists/email.txt")
+# block_email <- as.data.frame((block_email[sample(nrow(block_email), 8), ]))
+block_email <- loadBlock("https://lists.blocklist.de/lists/email.txt", trows)
+
+# block_ftp <- read.csv("https://lists.blocklist.de/lists/ftp.txt")
+# block_ftp <- as.data.frame((block_ftp[sample(nrow(block_ftp), 8), ]))
+block_ftp <- loadBlock("https://lists.blocklist.de/lists/ftp.txt", trows)
+
+# block_ssh <- read.csv("https://lists.blocklist.de/lists/ssh.txt")
+# block_ssh <- as.data.frame((block_ssh[sample(nrow(block_ssh), 8), ]))
+block_ssh <- loadBlock("https://lists.blocklist.de/lists/ssh.txt", trows)
+
+# block_imap <- read.csv("https://lists.blocklist.de/lists/imap.txt")
+# block_imap <- as.data.frame((block_imap[sample(nrow(block_imap), 8), ]))
+block_imap <- loadBlock("https://lists.blocklist.de/lists/imap.txt", trows)
+
+# block_sip <- read.csv("https://lists.blocklist.de/lists/sip.txt")
+# block_sip <- as.data.frame((block_sip[sample(nrow(block_sip), 8), ]))
+block_sip <- loadBlock("https://lists.blocklist.de/lists/sip.txt", trows)
+
+# block_brute <- read.csv("https://lists.blocklist.de/lists/bruteforcelogin.txt")
+# block_brute <- as.data.frame((block_brute[sample(nrow(block_brute), 8), ]))
+block_brute <- loadBlock("https://lists.blocklist.de/lists/bruteforcelogin.txt", trows)
+
 block_strong <- read.csv("https://lists.blocklist.de/lists/strongips.txt")
 
 # bajar fuentes dinamicamente:

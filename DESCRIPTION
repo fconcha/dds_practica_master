@@ -1,11 +1,11 @@
 Package: ddspracticamaster
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Data Driven Security Practica Master
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Author: Felipe Concha, Roberto Bartolomé
+Maintainer: Felipe Concha <fconcha.sep@gmail.com>, Roberto Bartolomé <roberto.bartolome.medina@gmail.com>
+Description: It shows a map indicating geolocalized IP that have participate in attacks to services.
+    The IPs are downloaded from https://lists.blocklist.de
+License: MIT
 Encoding: UTF-8
 LazyData: true

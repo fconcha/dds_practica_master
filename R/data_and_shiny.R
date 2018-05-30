@@ -1,11 +1,11 @@
 # Instalación de Paquetes base para la creación del data frame
 
-install.packages('devtools')
-install.packages("rjson")
-install.packages("RCurl")
-install.packages("bitops")
-install.packages("shiny")
-install.packages("leaflet")
+# install.packages('devtools')
+# install.packages("rjson")
+# install.packages("RCurl")
+# install.packages("bitops")
+# install.packages("shiny")
+# install.packages("leaflet")
 
 # Instalación de librerarias necesarios para la función que recorre la lista de IP
 
@@ -21,6 +21,18 @@ library(sp)
 
 # Cargamos Shiny para ver los mapas en html
 library(shiny)
+
+# Buscamos la data que tenemos en nuestro equipo que contiene el total de ataques 28135 lineas
+# save(total_ataques, file = "totalatack.rda")
+
+# total_ataques <- read.csv("R/data/total_dataframe.txt", sep = "\t")
+# getwd()
+# ls()
+# save(total_ataques, file = "R/total_ataques.rda")
+load("total_ataques.rda")
+# rm(total_ataques)
+# class(total_ataques)
+# View(total_ataques)
 
 # Creación de un data frame que contiene la lista de todas las IP bloquedas proporcionadas por el sitio https://lists.blocklist.de/lists/all.txt
 # divididas por una muestra aleatoria de 8 filas de cada unas de las amenzas registradas, ataques servidor apache, email, ftp, ssh, imap,
@@ -115,9 +127,10 @@ ip_geo_merge <- rbind.data.frame(ip_geo_apache, ip_geo_email, ip_geo_ftp, ip_geo
 View(ip_geo_merge)
 
 
-# Buscamos la data que tenemos en nuestro equipo que contiene el total de ataques 28135 lineas
-total_ataques <- read.csv("data/total_dataframe.txt", sep = "\t")
-
+#rm(total_ataques)
+#ls()
+# total_ataques
+View(total_ataques)
 
 # Vemos el resultado de los datos obtenidos con shiny en dos vistas, la primera que contiene una muestra de los ataques los últimos 48 minutos
 # La segunda que contiene el total de ataques de todos los servicios

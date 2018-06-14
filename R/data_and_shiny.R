@@ -53,7 +53,7 @@ loadBlock <- function(url, rows) {
 
 # block_apache <- read.csv("https://lists.blocklist.de/lists/apache.txt")
 # block_apache <- as.data.frame((block_apache[sample(nrow(block_apache), 8), ]))
-block_apache <- loadBlock("https://lists.blocklist.de/lists/apache.txt", 8)
+# block_apache <- loadBlock("https://lists.blocklist.de/lists/apache.txt", 8)
 
 block_email <- read.csv("https://lists.blocklist.de/lists/email.txt")
 block_email <- as.data.frame((block_email[sample(nrow(block_email), 8), ]))
@@ -78,7 +78,7 @@ block_strong <- read.csv("https://lists.blocklist.de/lists/strongips.txt")
 
 # Seteamos el título de nuestra primera columna del dataframe con el nombre de "IP" de cada objeto creado antes
 
-colnames(block_apache) <- c("IP")
+# colnames(block_apache) <- c("IP")
 colnames(block_email) <- c("IP")
 colnames(block_ftp) <- c("IP")
 colnames(block_ssh) <- c("IP")
@@ -114,7 +114,7 @@ geodeip <- function(df = NULL) {
 # Utilizamos la función para geolocalizar las ip de nuestros objetos creados anteriormente y las asignamos a uno nuevo
 #Este paso es el mas lento porque busca cada registro del objeto en la api proporcinada en la función.
 
-ip_geo_apache <- geodeip(block_apache)
+# ip_geo_apache <- geodeip(block_apache)
 ip_geo_email <- geodeip(block_email)
 ip_geo_ftp <- geodeip(block_ftp)
 ip_geo_ssh <- geodeip(block_ssh)
@@ -128,7 +128,7 @@ ip_geo_strong <- geodeip(block_strong)
 
 # Agreamos una columna a cada objeto con el nombre del servicio atacado
 
-ip_geo_apache$servicio <- rep("Apache", length(ip_geo_apache$ip))
+# ip_geo_apache$servicio <- rep("Apache", length(ip_geo_apache$ip))
 ip_geo_email$servicio <- rep("Email", length(ip_geo_email$ip))
 ip_geo_ftp$servicio <- rep("Ftp", length(ip_geo_ftp$ip))
 ip_geo_ssh$servicio <- rep("Ssh", length(ip_geo_ssh$ip))
@@ -140,7 +140,7 @@ ip_geo_strong$servicio <- rep("Strong", length(ip_geo_strong$ip))
 # Hacemos una unión de todas los objetos (en esta caso tablas que tienen el mismo formato, por lo tanto se puede utilizar la función
 # rbind.data.frame)
 # ip_geo_merge <- rbind.data.frame(ip_geo_apache, ip_geo_email, ip_geo_ftp, ip_geo_ssh, ip_geo_imap, ip_geo_sip, ip_geo_brute, ip_geo_strong)
-ip_geo_merge <- rbind.data.frame(ip_geo_apache, ip_geo_email, ip_geo_ftp, ip_geo_imap, ip_geo_sip, ip_geo_brute, ip_geo_strong)
+ip_geo_merge <- rbind.data.frame(ip_geo_email, ip_geo_ftp, ip_geo_imap, ip_geo_sip, ip_geo_brute, ip_geo_strong)
 
 # Se muestra la tabla Final con los datos elegantes para poder mapear posteriormente.
 # View(ip_geo_merge)
@@ -148,7 +148,7 @@ ip_geo_merge <- rbind.data.frame(ip_geo_apache, ip_geo_email, ip_geo_ftp, ip_geo
 # Buscamos la data que tenemos en nuestro equipo que contiene el total de ataques 28135 lineas
 # save(total_ataques, file = "R/total_ataques.rda")
 # total_ataques <- read.csv("data/total_dataframe.txt", sep = "\t")
-load("total_ataques.rda")
+load("R/total_ataques.rda")
 
 # Vemos el resultado de los datos obtenidos con shiny en dos vistas, la primera que contiene una muestra de los ataques los últimos 48 minutos
 # La segunda que contiene el total de ataques de todos los servicios
@@ -205,3 +205,4 @@ server <- function(input, output, session) {
 
 shinyApp(ui, server, options = list(display.mode="showcase", launch.browser=T)
 )
+

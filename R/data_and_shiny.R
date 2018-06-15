@@ -41,10 +41,11 @@ if (!require(sp)) {
 # }
 
 # Funciones de carga de datos
-loadBlock <- function(url, rows) {
-  block <- read.csv(url)
-  return(as.data.frame((block[sample(nrow(block), rows), ])))
-}
+source("data_upload.R")
+# loadBlock <- function(url, rows) {
+#  block <- read.csv(url)
+#  return(as.data.frame((block[sample(nrow(block), rows), ])))
+#}
 
 # Creación de un data frame que contiene la lista de todas las IP bloquedas proporcionadas por el sitio https://lists.blocklist.de/lists/all.txt
 # divididas por una muestra aleatoria de 8 filas de cada unas de las amenzas registradas, ataques servidor apache, email, ftp, ssh, imap,
@@ -91,25 +92,25 @@ colnames(block_strong) <- c("IP")
 # Instalar de la siguiente forma install_github('freegeoip', 'luiscape')), en este caso estamos reutilizando la única función del PKG que
 # debe recibir siempre como argumento un dataframe, en este caso los que se crearon en el paso anterior (block_apache,block_email,
 # block_ftp, block_ssh, block_imap, block_sip, block_brute, block_strong  )
-
-geodeip <- function(df = NULL) {
-  if (is.data.frame(df) == FALSE) {
-    warning('This function only works with data.frames. Please provide a data.frame.')
-  }
-  else {
-    final <- data.frame()
-    for (i in 1:nrow(df)) {
-      url <- paste("http://freegeoip.net/json/", c(as.character(df[i,])), sep="")
-      line <- tryCatch(
-        data.frame(fromJSON(getURLContent(url))),
-        error = function(e) e
-      )
-      if(inherits(line, "error")) line <- c(NA)
-      final <- rbind(final, line)
-    }
-    return(final)
-  }
-}
+source("locate_ip.R")
+# geodeip <- function(df = NULL) {
+#   if (is.data.frame(df) == FALSE) {
+#     warning('This function only works with data.frames. Please provide a data.frame.')
+#   }
+#   else {
+#     final <- data.frame()
+#     for (i in 1:nrow(df)) {
+#       url <- paste("http://freegeoip.net/json/", c(as.character(df[i,])), sep="")
+#       line <- tryCatch(
+#         data.frame(fromJSON(getURLContent(url))),
+#         error = function(e) e
+#       )
+#       if(inherits(line, "error")) line <- c(NA)
+#       final <- rbind(final, line)
+#     }
+#     return(final)
+#   }
+# }
 
 # Utilizamos la función para geolocalizar las ip de nuestros objetos creados anteriormente y las asignamos a uno nuevo
 #Este paso es el mas lento porque busca cada registro del objeto en la api proporcinada en la función.
